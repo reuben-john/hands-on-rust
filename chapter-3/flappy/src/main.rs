@@ -138,12 +138,12 @@ impl Obstacle {
 
         // Draw the top half of the obstacle
         for y in 0..self.gap_y - half_size {
-            ctx.set(screen_x, y, RED, BLACK, to_cp437('|'))
+            ctx.set(screen_x, y, RED, BLACK, to_cp437('|'));
         }
 
         // Draw the bottom half of the obstacle
         for y in self.gap_y + half_size..SCREEN_HEIGHT {
-            ctx.set(screen_x, y, RED, BLACK, to_cp437('|'))
+            ctx.set(screen_x, y, RED, BLACK, to_cp437('|'));
         }
     }
 
