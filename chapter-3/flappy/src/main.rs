@@ -61,10 +61,9 @@ impl State {
     }
 
     fn play(&mut self, ctx: &mut BTerm) {
-        // TODO: Fill in this stub later
         ctx.cls_bg(NAVY);
         self.frame_time += ctx.frame_time_ms;
-        if self.frame_time < FRAME_DURATION {
+        if self.frame_time > FRAME_DURATION {
             self.frame_time = 0.0;
 
             self.player.gravity_and_move();
