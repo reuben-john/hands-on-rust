@@ -66,3 +66,11 @@ Vectors are a type of array that you can push values onto.  This way they are dy
 They are created using vec! to convert a list to a vector. You can also create a new empty list using Vec::new() The macro vec! is the preferred method
 
 you can use loop as a while loop. You break it out manually via break
+
+You can create enumerations that allow you to have a predetermined list of items. You use enum for this.
+Rust enumerations can include data and functions for each entry.  
+You can use enumerations inside the structs and can mix and match types
+
+You access the enumeration using ::  it Enumeration::Member
+
+You use pattern matching to check the enumeration match as enumerations can contain complex values

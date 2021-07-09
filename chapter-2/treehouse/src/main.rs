@@ -4,7 +4,16 @@ use std::io::stdin;
 struct Visitor {
     // This is a struct, like a class, that acts as a blueprint for something.
     name: String,
-    greeting: String,
+    action: VisitorAction, // enum
+    age: i8,               // 8 bit signed integer.  Values between -127 and 127
+}
+
+#[derive(Debug)]
+enum VisitorAction {
+    Accept,
+    AcceptWithNote { note: String },
+    Refuse,
+    Probation,
 }
 
 impl Visitor {
@@ -12,19 +21,36 @@ impl Visitor {
     // You define methods on the struct to interact
     // you need to use & to tell rust we are referencing the variable in memory
 
-    fn new(name: &str, greeting: &str) -> Self {
+    fn new(name: &str, action: VisitorAction, age: i8) -> Self {
         // Self refers to the struct while self refers to the instance
 
         // No semicolon says this is a return.  Every field must be included for it to work
         // This will take &str and return String since to_lowercase and to_string convert them.
         Self {
             name: name.to_lowercase(),
-            greeting: greeting.to_string(),
+            action, // You can skip the variable is the same as the struct's field name
+            age,
         }
     }
     // &self denotes you have access to the instance contents like self in a class
     fn greet_visitor(&self) {
-        println!("{}", self.greeting) // You can debug your placeholder by using {:?}
+        // println!("{}", self.greeting) // You can debug your placeholder by using {:?}
+
+        // Match the action against the enum
+        // Each match uses => for the code to execute on a match
+        match &self.action {
+            VisitorAction::Accept => println!("Welcome to the bat cave, {}", self.name),
+            VisitorAction::AcceptWithNote { note } => {
+                // This will destruture the data in the enum and make it available
+                println!("Welcome to the bat cave, {}", self.name);
+                println!("{}", note);
+                if self.age < 21 {
+                    println!("Do not serve alcohol to {}", self.name);
+                }
+            }
+            VisitorAction::Probation => println!("{} is now a probationary member", self.name),
+            VisitorAction::Refuse => println!("Do not allow {} in!", self.name),
+        }
     }
 }
 
@@ -46,9 +72,15 @@ fn main() {
     // This converts the list to a vector which is generic and can expand as you add items to it
     // You must set it as mutable
     let mut visitor_list = vec![
-        Visitor::new("bob", "Hello Bob, enjoy your visit."),
-        Visitor::new("sally", "Hello Bob, Jane was asking about you."),
-        Visitor::new("bender", "Hello Bender, the bar is fully stocked."), // the last trailing comma on a list is ignored
+        Visitor::new("bob", VisitorAction::Accept, 45), // call the enum action
+        Visitor::new(
+            "sally",
+            VisitorAction::AcceptWithNote {
+                note: String::from("Lactose-free milk is in the fridge"),
+            },
+            15,
+        ),
+        Visitor::new("bender", VisitorAction::Refuse, 30), // the last trailing comma on a list is ignored
     ];
     loop {
         println!("Hello, what's your name? (Leave empty and press ENTER to quit)");
@@ -65,21 +97,21 @@ fn main() {
             .iter() // Use iterators on the list
             .find(|visitor| visitor.name == name); // find runs a closure to determine what to look for. true if it finds it, false otherwise
                                                    // This will set the matched item as the value to match inside the option
-        // println!("{:?}", known_visitor); // This will print out the full struct since it derives Debug
-                                         // This will check for the value inside the Option returned by find
-                                         // If found, assign it to visitor for inside the match
-                                         // If None, do something else
-                                         // => is used to mark code to execute for the match
+                                                   // println!("{:?}", known_visitor); // This will print out the full struct since it derives Debug
+                                                   // This will check for the value inside the Option returned by find
+                                                   // If found, assign it to visitor for inside the match
+                                                   // If None, do something else
+                                                   // => is used to mark code to execute for the match
         match known_visitor {
             Some(visitor) => visitor.greet_visitor(),
             None => {
                 // is_empty is a build in on String that checks for an empty string.  IE len == 0
-                if name.is_empty() { 
-                    break;  // Break out of loop()
+                if name.is_empty() {
+                    break; // Break out of loop()
                 } else {
                     // Add new visitors instead
                     println!("{} is not on the visitor list.", name);
-                    visitor_list.push(Visitor::new(&name, "New friend"));
+                    visitor_list.push(Visitor::new(&name, VisitorAction::Probation, 0));
                 }
             }
         }
