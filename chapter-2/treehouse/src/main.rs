@@ -84,4 +84,6 @@ fn main() {
             }
         }
     }
+    println!("The final list of visitors:");
+    println!("{:#?}", visitor_list); // use # for pretty print
 }
