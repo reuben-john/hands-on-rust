@@ -48,3 +48,22 @@ You can use a range the uses the len() of the array.  0..my_list.len()
 Best is iterating like python for x in &my_list
 
 structs are like a class.  You define them using struct then use them using impl
+You don't access associated functions via .  is name.new() rather you call the method from the struct.  Struct::new()
+You do access method functions via . ie name.greet()
+
+rust has many iterators built in. They function with method chaining and allow you to manipulate data. It will work in any collection
+
+find() uses a closure to check for data in the collection
+It returns an Option which contains the value that was matched or are empty
+An option has Some(x) value or None
+There any many different ways it interact with Options, but match is used to determine if the Option contains that data.
+
+Iterators are extremely fast. Faster than using your own loops.  They work similarly to LINQ in c#
+
+You can use the derive macro to add Debug to print any types. So if you add it to your struct, it will print out the whole struct with the debug placeholder. All types must support that derive to work.
+
+Vectors are a type of array that you can push values onto.  This way they are dynamically sized. 
+They are created using vec! to convert a list to a vector. You can also create a new empty list using Vec::new() The macro vec! is the preferred method
+
+
+
