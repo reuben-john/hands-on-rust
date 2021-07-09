@@ -65,5 +65,4 @@ You can use the derive macro to add Debug to print any types. So if you add it t
 Vectors are a type of array that you can push values onto.  This way they are dynamically sized. 
 They are created using vec! to convert a list to a vector. You can also create a new empty list using Vec::new() The macro vec! is the preferred method
 
-
-
+you can use loop as a while loop. You break it out manually via break

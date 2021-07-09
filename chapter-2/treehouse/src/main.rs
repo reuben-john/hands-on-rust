@@ -43,33 +43,45 @@ fn what_is_your_name() -> String {
 }
 
 fn main() {
-    let visitor_list = [
+    // This converts the list to a vector which is generic and can expand as you add items to it
+    // You must set it as mutable
+    let mut visitor_list = vec![
         Visitor::new("bob", "Hello Bob, enjoy your visit."),
         Visitor::new("sally", "Hello Bob, Jane was asking about you."),
         Visitor::new("bender", "Hello Bender, the bar is fully stocked."), // the last trailing comma on a list is ignored
     ];
-    println!("Hello, what's your name?");
-    let your_name = what_is_your_name();
-    // let mut allow_them_in = false;
-    // for visitor in &visitor_list {
-    //     // Loop through the visitor list
-    //     if visitor == &your_name {
-    //         allow_them_in = true;
-    //     }
-    // }
-    //  This replaces the above loop. It uses iterators to replace the manual loop
-    let known_visitor = visitor_list
-        .iter() // Use iterators on the list
-        .find(|visitor| visitor.name == your_name); // find runs a closure to determine what to look for. true if it finds it, false otherwise
-        // This will set the matched item as the value to match inside the option
-    println!("{:?}", known_visitor); // This will print out the full struct since it derives Debug
-    // This will check for the value inside the Option returned by find
-    // If found, assign it to visitor for inside the match
-    // If None, do something else
-    // => is used to mark code to execute for the match
-    match known_visitor {
-        Some(visitor) => visitor.greet_visitor(), 
-        None => println!("Sorry, you are not on the visitor list. Please leave.") // You can debug your placeholder by using {:?}
+    loop {
+        println!("Hello, what's your name? (Leave empty and press ENTER to quit)");
+        let name = what_is_your_name();
+        // let mut allow_them_in = false;
+        // for visitor in &visitor_list {
+        //     // Loop through the visitor list
+        //     if visitor == &your_name {
+        //         allow_them_in = true;
+        //     }
+        // }
+        //  This replaces the above loop. It uses iterators to replace the manual loop
+        let known_visitor = visitor_list
+            .iter() // Use iterators on the list
+            .find(|visitor| visitor.name == name); // find runs a closure to determine what to look for. true if it finds it, false otherwise
+                                                   // This will set the matched item as the value to match inside the option
+        // println!("{:?}", known_visitor); // This will print out the full struct since it derives Debug
+                                         // This will check for the value inside the Option returned by find
+                                         // If found, assign it to visitor for inside the match
+                                         // If None, do something else
+                                         // => is used to mark code to execute for the match
+        match known_visitor {
+            Some(visitor) => visitor.greet_visitor(),
+            None => {
+                // is_empty is a build in on String that checks for an empty string.  IE len == 0
+                if name.is_empty() { 
+                    break;  // Break out of loop()
+                } else {
+                    // Add new visitors instead
+                    println!("{} is not on the visitor list.", name);
+                    visitor_list.push(Visitor::new(&name, "New friend"));
+                }
+            }
+        }
     }
-    
 }
