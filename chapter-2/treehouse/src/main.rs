@@ -1,10 +1,5 @@
 use std::io::stdin;
 
-fn main() {
-    println!("Hello, what's your name?");
-    let your_name = what_is_your_name();
-    println!("Hello, {}. It is a pleasure to meet you.", your_name) // You can debug your placeholder by using {:?}
-}
 
 /// This will return a string
 fn what_is_your_name() -> String {
@@ -17,5 +12,26 @@ fn what_is_your_name() -> String {
         .expect("Failed to read line"); // Show this if it fails
     your_name // Return statement doesn't end in a semi colon
         .trim() // remove extra characters
-        .to_lowercase()  // convert to lowercase
+        .to_lowercase() // convert to lowercase
+}
+
+
+fn main() {
+    let visitor_list = ["bob", "sally", "bender"];
+    println!("Hello, what's your name?");
+    let your_name = what_is_your_name();
+    let mut allow_them_in = false;
+    for visitor in &visitor_list { // Loop through the visitor list
+        if visitor == &your_name {
+            allow_them_in = true;
+        }
+    }
+
+    if allow_them_in {
+        println!("Hello, {}. Welcome to the cave of wonders..", your_name) // You can debug your placeholder by using {:?}    
+    }
+    else {
+        println!("Sorry, {}. You are not on the list.", your_name) // You can debug your placeholder by using {:?}
+    }
+    
 }
